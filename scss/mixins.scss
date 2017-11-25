@@ -1,0 +1,84 @@
+//Mixin is a chunck of resuesable css or sass which we can inject in our elements. It is applicale for all the element which use same style
+//We can pass varibales and arguments to Mixins too
+
+@mixin banner {
+width:100%;
+position: relative;
+color: white;
+//Target the banners within the banner itself
+.banner-content{
+  position: absolute;
+  top: 50px;
+  width: 100%;
+}
+img{
+
+  width: 100%;
+
+}
+span{
+  font-size: $bannerHeading;
+  display: block;
+  text-transform: uppercase;
+  font-weight: bold;
+
+  @include mQ(3000px, 1200px){
+    font-size: 68px;
+  }
+}
+span.title{
+  font-weight: normal;
+  margin-bottom: 30px;
+}
+}
+
+@mixin clearFix {
+  //pseudo class synta ->  &: class name
+  &:after{
+    content: "";
+    display: block;
+    clear: both; //It will clear all the li tags before ul
+}
+}
+
+
+//Creating a grid
+
+@mixin grid($cols, $mgn) {
+  float: left;
+margin-right: $mgn;
+margin-bottom: $mgn;
+
+//Formulae to calculate the equal width for each element of the grid by taking out the margins
+
+width: ((100%-(($cols - 1)*$mgn))/$cols);
+
+//Passing last child or 5th child of every row using the following method
+//We have emabed the varibale $cols within the paranthesis/varibale template and use # in the front becuase
+//On the last chlild the margin will be 0
+&:nth-child(#{$cols}n){
+  margin-right: 0;
+}
+
+}
+//We usee three ... to tell the mixin that there will be mulitple arguments
+@mixin mQ($arg...) {
+
+//if statement
+
+  @if length($arg) == 1 {
+    @media screen and (max-width: nth($arg,1)){
+
+
+      @content; //content keyword - It soaked in styles from your rules and post those styles whereever the content keyword is present
+
+  }
+}
+
+  @if length($arg) == 2 {
+    @media screen and (max-width: nth($arg,1)) and (min-width: nth($arg,2)){
+      @content;
+  }
+
+  }
+}
